@@ -1,0 +1,44 @@
+<% if(cls === 'MNG') { %>
+<div class="container">
+    <h2><%=table_name%> 자료 목록</h2>
+
+    <table class="table table-bordered" style="text-align: center;">
+        <thead>
+            <% var i=0;
+            while(i < count_col[0].count) {
+            %>
+                <th><%=table_col[i].COLUMN_COMMENT%></th>
+            <% i++; } %>
+            <th colspan="3"></th>
+        </thead>
+
+        <% var k=0;
+        while(k < table.length) {
+        %>
+        <tr>
+            <% 
+            for(var i=0; i < count_col[0].count; i++) {
+                var n = table_col[i].COLUMN_NAME;
+                var r = table[k]
+                var key = Object.values(r)
+            %>
+            <td><%=key[i]%></td>
+        <% } %>
+            <td><a href="#" style="text-decoration: none;">생성</a></td>
+            <td><a href="#" style="text-decoration: none;">수정</a></td>
+            <td><a href="#" style="text-decoration: none;">삭제</a></td>
+        </tr>
+        <% k++; } %>
+    </table>
+</div>
+
+<% if(table.length === 0) { %>
+    <p>자료가 없습니다. </p>
+<% } %>
+
+<% } else { %>
+    <script>
+        alert('관리자만 이용 가능합니다.');
+        window.location.href='/';
+    </script>
+<% } %>

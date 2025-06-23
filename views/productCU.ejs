@@ -1,0 +1,148 @@
+<% if(cls === 'MNG') { %>
+<div class="container">	
+    <script>
+
+        function displayFileName(){
+            var fileName = $("#file").val();
+            $(".upload-name").val(fileName);
+        }
+    </script>
+	
+
+<% if(create) { %>
+    <h2>상품 입력</h2>
+	<form action="/product/create_process" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+        <div class="mb-3">
+			<label class="form-label" for="id_main">카테고리 </label> 
+            <select name = "category" id = "id_main">
+                <%
+                    var i=0;
+                    while(i < categorys.length) {
+                        var selected='';
+                        var ids = categorys[i].main_id + categorys[i].sub_id;
+                %>
+                        <option value="<%=ids%>"><%=categorys[i].main_name%> : <%=categorys[i].sub_name%> </option>
+                <% i++; } %>
+                
+            </select>
+		</div>
+<% } else { %>
+    <h2>상품 수정</h2>
+    <form action="/product/update_process" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+        <input type="hidden" name="merId" value="<%=mer[0].mer_id%>">
+        <div class="mb-3">
+			<label class="form-label" for="id_main">카테고리 </label> 
+            <select name = "category" id = "id_main">
+                <%
+                    var i=0;
+                    while(i < categorys.length) {
+                        var selected='';
+                        var ids = categorys[i].main_id + categorys[i].sub_id;
+                        var ids2 = mer[0].main_id + mer[0].sub_id;
+                        if(ids === ids2) { selected='selected'; }
+                %>
+                        <option value="<%=ids%>" <%=selected%> ><%=categorys[i].main_name%> : <%=categorys[i].sub_name%> </option>
+                <% i++; } %>
+            </select>
+		</div>
+<% } %>        
+
+        <table>
+        <tr><td>
+        <div class="mb-3">
+			<label class="form-label" for="id">제품명</label> 
+            <% if(create) { %>
+			    <input class="form-control" type="text" name="name" style = "width:300px;" />
+            <% } else { %>
+                <input class="form-control" type="text" name="name" value="<%=mer[0].name%>" style = "width:300px;" />
+            <% } %>
+		</div>
+        </td>
+        <td width = "30px"></td>
+        <td>
+        <div class="mb-3">
+			<label class="form-label" for="id">가격</label> 
+            <% if(create) { %>
+			<input class="form-control" type="text" name="price" style="width:300px;" />
+            <% } else { %>
+                <input class="form-control" type="text" name="price" value="<%=mer[0].price%>" style = "width:300px;" />
+            <% } %>
+		</div>
+        </td>
+        </tr>
+        <tr><td>
+        <div class="mb-3">
+			<label class="form-label" for="id">재고</label> 
+            <% if(create) { %>
+			<input class="form-control" type="text" name="stock" style="width:300px;" />
+            <% } else { %>
+                <input class="form-control" type="text" name="stock" value="<%=mer[0].stock%>" style = "width:300px;" />
+            <% } %>
+		</div></td><td width = "30px"></td><td>
+        <div class="mb-3">
+			<label class="form-label" for="id">브랜드</label> 
+            <% if(create) { %>
+			<input class="form-control" type="text" name="brand" style="width:300px;" />
+            <% } else { %>
+                <input class="form-control" type="text" name="brand" value="<%=mer[0].brand%>" style = "width:300px;" />
+            <% } %>
+		</div></td>
+        </tr>
+        <tr><td>
+        <div class="mb-3">
+			<label class="form-label" for="id">공급자</label> 
+            <% if(create) { %>
+			<input class="form-control" type="text" name="supplier" style="width:300px;" />
+            <% } else { %>
+                <input class="form-control" type="text" name="supplier" value="<%=mer[0].supplier%>" style = "width:300px;" />
+            <% } %>
+		</div></td><td width = "30px"></td><td>
+        <div class="mb-3">
+			<label class="form-label" for="id">할인여부</label> 
+            <% if(create) { %>
+			<input class="form-control" type="text" name="sale_yn" style="width:300px;" />
+            <% } else { %>
+                <input class="form-control" type="text" name="sale_yn" value="<%=mer[0].sale_yn%>" style = "width:300px;" />
+            <% } %>
+		</div></td>
+        </tr>
+        <tr>
+        <td>
+        <div class="mb-3">
+			<label class="form-label" for="id">할인가격</label> 
+            <% if(create) { %>
+			<input class="form-control" type="text" name="sale_price" style="width:300px;" />
+            <% } else { %>
+                <input class="form-control" type="text" name="sale_price" value="<%=mer[0].sale_price%>" style = "width:300px;" />
+            <% } %>
+		</div>
+        </td><td width = "30px"></td>
+        <td>
+        </td>
+        </tr>
+        </table>
+        <div class="mb-3">
+            <% if(create) { %>
+            <input class="upload-name" value="" name = "image" placeholder="이미지파일">
+            <% } else { %>
+            <input class="upload-name" value="<%=mer[0].image%>" name = "image" placeholder="이미지파일">
+            <% } %>
+            <input type="file" id="file" name="uploadFile" onchange="displayFileName()">
+        </div>
+    <% if(create) { %>
+        <button class="btn btn-outline-primary btn-sm" type="submit">입력</button>
+    <% } else { %>
+        <button class="btn btn-outline-primary btn-sm" type="submit">수정</button>
+    <% } %>
+        &nbsp;&nbsp;&nbsp;
+        <a href="/product/view"><button class="btn btn-outline-primary btn-sm" type="button">제품목록 돌아가기</button></a>
+    
+  </form>
+        
+</div>
+<% } else { %>
+    <script>
+        alert('관리자만 이용 가능합니다.');
+        window.location.href='/';
+    </script>
+<% } %>

@@ -1,0 +1,27 @@
+<% if(cls === 'MNG') { %>
+<table class="table table-bordered " style="text-align: center;">
+    <thead class="table-primary ">
+        <th>테이블 명</th><th>테이블 설명</th>
+    </thead>
+
+    <% 
+    var k = 0;
+    while(k < table.length) {
+    %>
+        <tr>
+            <td><a href="/table/view/<%=table[k].TABLE_NAME%>" style="text-decoration: none;"><%=table[k].TABLE_NAME%></a></td>
+            <td><%=table[k].TABLE_COMMENT%></td>
+        </tr>
+    <% k++; } %>
+</table>
+
+<% if(table.length === 0) { %>
+    <p>자료가 없습니다. </p>
+<% } %>
+
+<% } else { %>
+    <script>
+        alert('관리자만 이용 가능합니다.');
+        window.location.href='/';
+    </script>
+<% } %> 

@@ -1,0 +1,16 @@
+<table class="table table-bordered ">
+    <form  method ="post">
+    <tr ><td rowspan = "5"><img src="<%=mer[0].image%>" style="width:300px;height:300px; "></td>
+         <td><%=mer[0].name%></td></tr>
+    <tr> <td>가격 :  <%=mer[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>원</td></tr>
+    <tr> <td>브랜드 : <%=mer[0].brand%></td></tr>
+    <tr> <td>수량 : <input type="number" name="qty"> </td></tr>
+        <input type="hidden" name="loginid" value="<%=person[0].loginid%>">
+        <input type="hidden" name="mer_id" value="<%=mer[0].mer_id%>">
+        <input type="hidden" name="price" value="<%=mer[0].price%>">
+            <tr><td><button class="btn btn-outline-primary btn-sm" formaction = "/purchase/create_process" type="submit">결재</button>
+                    <button class="btn btn-outline-primary btn-sm" formaction = "/purchase/cart_process" type="submit">장바구니</button>
+            </td></tr>
+
+    </form>   
+</table>

@@ -1,0 +1,181 @@
+<% if(cls === 'CST') { %>
+<div class="container">
+    <table class="table table-bordered text-center" style="text-align: center;">
+        <thead>
+            <th>구매선택</th><th>상품</th><th>상품명</th><th>단가</th><th>담은날</th><th>수량</th>
+        </thead>
+        <form method="post" id="form">
+        <%
+        var k=0;
+        while(k < cart.length) {
+        %>
+            <input type="hidden" name="mer_id_<%=cart[k].cart_id%>" value="<%=cart[k].mer_id%>">
+            
+            <tr>
+                <td><input type="checkbox" name="check_yn" value="<%=cart[k].cart_id%>"></td>
+                <td><img src="<%=cart[k].image%>" style="width:100px;height:100px; "></td>
+                <td><%=cart[k].productname%></td>
+                <td><%=cart[k].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>원</td>
+                <input type="hidden" name="price_<%=cart[k].cart_id%>" value="<%=cart[k].price%>">
+                <td><%=cart[k].date%></td>
+                <td><input name="qty_<%=cart[k].cart_id%>" value="1"></td>
+            </tr>
+        <% k++; } %>
+        
+    </table>
+    <input type="hidden" name="loginid" value="<%=l[0].loginid%>">
+    <% if(cart.length != 0) { %>
+    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button class="btn btn-outline-primary btn-sm" type="submit" onclick="submitForm1()">결재</button>
+        <button class="btn btn-outline-primary btn-sm" type="submit" onclick="submitForm2()">삭제</button>
+        <a href="/"> <button type="button" class="btn btn-outline-primary btn-sm">상품 목록 돌아가기</button> </a>
+    </div>
+    <% } else { %>
+        <p>자료가 없습니다. </p>
+    <% } %>
+    </form>
+</div>
+<% } else { %>
+    <script>
+        alert('고객만 이용 가능합니다.');
+        window.location.href='/';
+    </script>
+<% } %>
+
+<script>
+    function submitForm1() {
+        var num = document.querySelectorAll('input[name="check_yn"]:checked').length;
+        var form = document.getElementById("form");
+        
+        var checked = form.elements['check_yn'];
+        var checked_num = checked.length;
+
+        if(num===1 && checked_num === undefined) { //checked.value로 접근해야 하는 경우
+            
+            var selectItem = {
+                cartId: checked.value,
+                merId: form.elements['mer_id_'+checked.value].value,
+                qty: form.elements['qty_'+checked.value].value,
+                price: form.elements['price_' + checked.value].value
+                
+            };
+
+            var selectItemInput = document.createElement('input');
+            selectItemInput.type='hidden';
+            selectItemInput.name='selectedItems';
+            selectItemInput.value=JSON.stringify(selectItem);
+
+            form.appendChild(selectItemInput);
+            form.action='/purchase/cart_create_process';
+            form.submit();
+        } else if(num === 1 && checked_num != undefined) { // checked[0].value로 접근해야 하는 경우
+            for(var k=0; k<checked.length; k++) {
+                if(checked[k].checked) {
+                    var selectItem = {
+                        cartId: checked[k].value,
+                        merId: form.elements['mer_id_'+checked[k].value].value,
+                        qty: form.elements['qty_'+checked[k].value].value,
+                        price: form.elements['price_' + checked[k].value].value
+                    };
+                }
+            }
+
+            var selectItemInput = document.createElement('input');
+            selectItemInput.type='hidden';
+            selectItemInput.name='selectedItems';
+            selectItemInput.value=JSON.stringify(selectItem);
+
+            form.appendChild(selectItemInput);
+            form.action='/purchase/cart_create_process';
+            form.submit();
+        } else{
+            var selectedItems = [];
+            for(var i=0; i<checked.length; i++) {
+                if(checked[i].checked) {
+                    var item = {
+                        cartId : checked[i].value,
+                        merId : form.elements['mer_id_' + checked[i].value].value,
+                        qty : form.elements['qty_'+ checked[i].value].value,
+                        price: form.elements['price_' + checked[i].value].value
+                    };
+                    selectedItems.push(item);
+                }
+            }
+            var selectedItemsInput = document.createElement('input');
+            selectedItemsInput.type = 'hidden';
+            selectedItemsInput.name = 'selectedItems';
+            selectedItemsInput.value = JSON.stringify(selectedItems);
+
+            form.appendChild(selectedItemsInput);
+            form.action = '/purchase/cart_create_process';
+            form.submit();
+        }
+    }
+
+    function submitForm2() {
+        var num = document.querySelectorAll('input[name="check_yn"]:checked').length;
+        var form = document.getElementById("form");
+        
+        //cart 상품 개수가 1개인 상태에서 1개만 선택했을 경우 checked.value로 접근해야 하고,
+        //개수가 2개 이상인 상태에서 1개만 선택했을 경우 checked[0].value로 접근해야 함
+        var checked = form.elements['check_yn'];
+        var checked_num = checked.length;
+
+        if(num===1 && checked_num === undefined){ //checked.value로 접근해야 하는 경우
+            
+            var selectItem = {
+                cartId: checked.value,
+                merId: form.elements['mer_id_'+checked.value].value,
+                qty: form.elements['qty_'+checked.value].value
+            };
+
+            var selectItemInput = document.createElement('input');
+            selectItemInput.type='hidden';
+            selectItemInput.name='selectedItems';
+            selectItemInput.value=JSON.stringify(selectItem);
+
+            form.appendChild(selectItemInput);
+            form.action='/purchase/cart_delete_process';
+            form.submit();
+        } else if(num === 1 && checked_num != undefined) { //checked[0].value로 접근해야 하는 경우
+            for(var k=0; k<checked.length; k++) {
+                if(checked[k].checked) {
+                    var selectItem = {
+                        cartId: checked[k].value,
+                        merId: form.elements['mer_id_'+checked[k].value].value,
+                        qty: form.elements['qty_'+checked[k].value].value
+                    };
+                }
+            }
+
+            var selectItemInput = document.createElement('input');
+            selectItemInput.type='hidden';
+            selectItemInput.name='selectedItems';
+            selectItemInput.value=JSON.stringify(selectItem);
+
+            form.appendChild(selectItemInput);
+            form.action='/purchase/cart_delete_process';
+            form.submit();
+        } else{
+            var selectedItems = [];
+            for(var i=0; i<checked.length; i++) {
+                if(checked[i].checked) {
+                    var item = {
+                        cartId : checked[i].value,
+                        merId : form.elements['mer_id_' + checked[i].value].value,
+                        qty : form.elements['qty_'+ checked[i].value].value
+                    };
+                    selectedItems.push(item);
+                }
+            }
+            var selectedItemsInput = document.createElement('input');
+            selectedItemsInput.type = 'hidden';
+            selectedItemsInput.name = 'selectedItems';
+            selectedItemsInput.value = JSON.stringify(selectedItems);
+
+            form.appendChild(selectedItemsInput);
+            form.action = '/purchase/cart_delete_process';
+            form.submit();
+        }
+    }
+</script>

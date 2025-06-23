@@ -1,0 +1,32 @@
+<% if(cls === 'MNG') { %>
+<table class="table table-bordered " style="text-align: center;">
+    <thead class="table-primary ">
+        <th>loginid</th><th>고객명</th><th>상품id</th><th>상품명</th><th>일자</th><th colspan="2"></th>
+
+    </thead>
+    <% var k = 0;
+        while(k<cart.length) { %>
+    <tr>
+    <td><%=cart[k].loginid%></td>
+    <td><%=cart[k].personname%></td>
+    <td><%=cart[k].mer_id%></td>
+    <td><%=cart[k].productname%></td>
+    <td><%=cart[k].date%></td>
+    
+    <td><a href="/cartupdate/<%=cart[k].cart_id%>" style="text-decoration: none;">수정</a></td>
+    <td><a href="/cartdelete_process/<%=cart[k].cart_id%>" style="text-decoration: none;" onclick="if(confirm('정말로 삭제하시겠습니까?')==false) return false">삭제</a></td>
+    </tr>
+    <% k++; } %>
+
+</table>
+
+<% if(cart.length === 0) { %>
+    <p>자료가 없습니다. </p>
+<% } %>
+
+<% } else { %>
+    <script>
+        alert("관리자만 이용 가능합니다.");
+        window.location.href = "/";
+    </script>
+<% } %>

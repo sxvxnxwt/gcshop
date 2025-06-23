@@ -1,0 +1,66 @@
+<% if(cls === 'MNG') { %>
+<div class="container">	
+	
+	<% if(create) {  %>
+		<h2>코드 입력</h2>
+		<form action="/code/create_process" method="post" >
+	<% } else { %>
+		<h2>코드 수정</h2>
+		<form action="/code/update_process" method="post" >
+			<input type="hidden" name="main" value="<%=m_i%>">
+			<input type="hidden" name="sub" value="<%=s_i%>">
+			<input type="hidden" name="start_date" value="<%=s%>">
+	<% } %>
+		
+	<% if(create) { %>
+		<div class="mb-3">
+			<label class="form-label" for="id">대분류</label> 
+			<input class="form-control" type="text" name="main_id" value="<%=m_i%>"  style = "width:300px;" />
+		</div>
+	<% } %>
+
+        <div class="mb-3">
+			<label class="form-label" for="id">대분류명</label> 
+			<input class="form-control" type="text" name="main_name" value="<%=m_n%>" style = "width:300px;" />
+		</div>
+	<% if(create) { %>
+        <div class="mb-3">
+			<label class="form-label" for="id">소분류</label> 
+			<input class="form-control" type="text" name="sub_id" value="<%=s_i%>" style="width:300px;" />
+		</div>
+	<% } %>
+
+        <div class="mb-3">
+			<label class="form-label" for="id">소분류명</label> 
+			<input class="form-control" type="text" name="sub_name" value="<%=s_n%>" style="width:300px;" />
+		</div>
+        <div class="mb-3">
+
+		<% if(create) { %>
+			<label class="form-label" for="id">시작일</label> 
+			<input class="form-control" type="text" name="start" id="start" value="<%=s%>" style="width:300px;" />
+		</div>
+		<% } else { %>
+			<label class="form-label" for="id">시작일</label> 
+			<input class="form-control" type="text" name="start" id="start" value="<%=s%>" style="width:300px;" disabled="disabled" />
+		</div>
+		<% } %>
+
+        <div class="mb-3">
+			<label class="form-label" for="id">종료일</label> 
+			<input class="form-control" type="text" name="end" id="end" value="<%=e%>" style="width:300px;" />
+		</div>
+		<% if(create) { %>
+			<button class="btn btn-outline-primary btn-sm" type="submit">입력</button>
+        <% } else { %>
+			<button class="btn btn-outline-primary btn-sm" type="submit">수정</button>
+		<% } %>
+		<button class="btn btn-outline-primary btn-sm" type="button" onclick="location.href='/code/view'">코드 목록으로 돌아가기</button>
+    
+</div>
+<% } else { %>
+	<script>
+        alert('관리자만 이용 가능합니다.');
+        window.location.href='/';
+    </script>
+<% } %>

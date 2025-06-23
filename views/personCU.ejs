@@ -1,0 +1,130 @@
+<% if(!login || cls==='MNG') { %>
+<div class="container">	
+	<% if(mng) { if(create) { %>
+		<h2>관리자 기능: 회원생성</h2>
+		<form action="/person/create_process" method="post" >
+	<% } else { %>
+		<h2>관리자 기능: 회원 정보 수정</h2>
+		<form action="/person/update_process" method="post" >
+			<input type="hidden" name="id" value="<%=person[0].loginid%>">
+	<% } } else { %>
+		<h2>회원가입</h2>
+		<form action="/auth/register_process" method="post" >
+	<% } %>
+		<% if(create) { %>
+			<div class="mb-3">
+				<label class="form-label" for="id">ID</label> 
+				<input class="form-control" type="text" name="loginid" placeholder="아이디를 입력해 주세요" style = "width:300px;" />
+			</div>
+		<% } %>
+			<div class="mb-3">
+				<label class="form-label" for="id">PW</label> 
+				<% if(create) { %>
+				<input class="form-control" type="text" name="password" placeholder="패스워드를 입력해 주세요" style = "width:300px;" />
+				<% } else { %>
+					<input class="form-control" type="text" name="password" value="<%=person[0].password%>" placeholder="패스워드를 입력해 주세요" style = "width:300px;" />
+				<% } %>
+			</div>
+			<div class="mb-3" >
+				<label class="form-label" for="id">이름</label> 
+				<% if(create) { %>
+				<input class="form-control" type="text" name="name" placeholder="이름을 입력해 주세요" value="" style = "width:300px;" />
+				<% } else { %>	
+					<input class="form-control" type="text" name="name" value="<%=person[0].name%>" placeholder="패스워드를 입력해 주세요" style = "width:300px;" />
+				<% } %>
+			</div>
+			<div class="mb-3">
+				<label class="form-label" for="id">주소</label> 
+				<% if(create) { %>
+				<input class="form-control" type="text" name="address" placeholder="주소를 입력해 주세요" value="" style = "width:300px;" />
+				<% } else { %>	
+					<input class="form-control" type="text" name="address" value="<%=person[0].address%>" placeholder="패스워드를 입력해 주세요" style = "width:300px;" />
+				<% } %>
+			</div>
+			<div class="mb-3">
+				<label class="form-label" for="id">전화번호</label> 
+				<% if(create) { %>
+				<input class="form-control" type="text" name="tel" placeholder="000-0000-0000" value="" style = "width:300px;" />
+				<% } else { %>
+					<input class="form-control" type="text" name="tel" value="<%=person[0].tel%>" placeholder="패스워드를 입력해 주세요" style = "width:300px;" />
+				<% } %>
+			</div>
+			<div class="mb-3">
+				<label class="form-label" for="id">생일</label> 
+				<% if(create) { %>
+				<input class="form-control" type="text" name="birth" placeholder="YYYYMMDD" value="" style = "width:300px;" />
+				<% } else { %>
+					<input class="form-control" type="text" name="birth" value="<%=person[0].birth%>" placeholder="패스워드를 입력해 주세요" style = "width:300px;" />
+				<% } %>
+			</div>
+
+			<% if(mng) { if(create) { %> <!--관리자 생성-->
+				<div class="mb-3">
+					<label class="form-label" for="class">CLASS </label> 
+					<select name = "class_category" id = "class">
+						<option value="CEO">경영자</option>
+						<option value="MNG">관리자</option>
+						<option value="CST">고객</option>
+					</select>
+				</div>
+				<div class="mb-3">
+					<label class="form-label" for="grade">GRADE </label> 
+					<select name = "grade_category" id = "grade">
+						<option value="S">실버(가장 낮은 등급)</option>
+						<option value="G">골드(중간 등급)</option>
+						<option value="D">다이아몬드(가장 높은 등급)</option>
+					</select>
+				</div>
+
+			<% } else { %> <!--관리자 수정-->
+				<div class="mb-3">
+					<label class="form-label" for="class">CLASS </label> 
+					<select name = "class_category" id = "class">
+						<%
+							var pClass = person[0].class;
+							var selected1 ='';
+							var selected2 ='';
+							var selected3 ='';
+							if(pClass === 'CEO') { selected1 = 'selected';}
+							if(pClass === 'MNG') { selected2 = 'selected';}
+							if(pClass === 'CST') { selected3 = 'selected';}
+						%>
+						<option value="CEO" <%=selected1%>>경영자</option>
+						<option value="MNG" <%=selected2%>>관리자</option>
+						<option value="CST" <%=selected3%>>고객</option>
+					</select>
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label" for="grade">GRADE </label> 
+					<select name = "grade_category" id = "grade">
+						<%
+							var pGrade = person[0].grade;
+							var selected1 ='';
+							var selected2 ='';
+							var selected3 ='';
+							if(pGrade === 'S') { selected1 = 'selected';}
+							if(pGrade === 'G') { selected2 = 'selected';}
+							if(pGrade === 'D') { selected3 = 'selected';}
+						%>
+						<option value="S" <%=selected1%>>실버(가장 낮은 등급)</option>
+						<option value="G" <%=selected2%>>골드(중간 등급)</option>
+						<option value="D" <%=selected3%>>다이아몬드(가장 높은 등급)</option>
+					</select>
+				</div>
+			<% } } %>
+			
+			<% if(create) { %>
+				<button class="btn btn-outline-primary btn-sm" type="submit">입력</button>
+			<% } else {  %>
+				<button class="btn btn-outline-primary btn-sm" type="submit">수정</button>
+			<% } %>
+			<a href="/person/view"><button class="btn btn-outline-primary btn-sm" type="button">고객 목록 돌아가기</button></a>
+		</form>	
+</div>
+<% } else { %>
+	<script>
+        alert('권한이 없습니다.');
+        window.location.href='/';
+    </script>
+<% } %>

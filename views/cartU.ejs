@@ -1,0 +1,54 @@
+<% if(cls === 'MNG') { %>
+<div class="container">	
+
+    <h2>cart 테이블 수정</h2>
+    <form action="/cartupdate_process" method="post">
+        <input type="hidden" name="cartId" value="<%=cart[0].cart_id%>">
+        <div class="mb-3">
+			<label class="form-label" for="id_main">고객 </label> 
+            <select name = "customer_category" id = "id_main">
+                <%
+                    var i=0;
+                    while(i < customer.length) {
+                        var selected='';
+                        var ids = customer[i].name;
+                        if(ids === cart[0].personname) { selected='selected'; }
+                %>
+                        <option value="<%=ids%>" <%=selected%> ><%=customer[i].name%> </option>
+                <% i++; } %>
+            </select>
+		</div>
+
+        <div class="mb-3">
+			<label class="form-label" for="id_main">상품 </label> 
+            <select name = "product_category" id = "id_main">
+                <%
+                    var i=0;
+                    while(i < product.length) {
+                        var selected='';
+                        var ids = product[i].name;
+                        if(ids === cart[0].productname) { selected='selected'; }
+                %>
+                        <option value="<%=ids%>" <%=selected%> ><%=product[i].name%> </option>
+                <% i++; } %>
+            </select>
+		</div>
+
+        <div class="mb-3">
+			<label class="form-label" for="date">날짜</label> <br>
+			<input class="form-control" type="text" name="date" id="date" value="<%=cart[0].date%>" style="width:300px;" disabled="disabled" />
+		</div>
+
+        <button class="btn btn-outline-primary btn-sm" type="submit">수정</button>
+        &nbsp;&nbsp;&nbsp;
+        <a href="/cartview"><button class="btn btn-outline-primary btn-sm" type="button">카트 목록 돌아가기</button></a>
+    </form>
+
+        
+</div>
+<% } else { %>
+    <script>
+        alert('관리자만 이용 가능합니다.');
+        window.location.href='/';
+    </script>
+<% } %>

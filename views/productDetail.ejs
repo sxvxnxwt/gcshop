@@ -1,0 +1,19 @@
+
+<table class="table table-bordered ">
+    <tr ><td rowspan = "6"><img src="<%=mer[0].image%>" style="width:300px;height:300px; "></td>
+         <td><%=mer[0].name%></td></tr>
+    <tr> <td>가격 :  <%=mer[0].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>원</td></tr>
+    <tr> <td>브랜드 : <%=mer[0].brand%></td></tr>
+    <tr> <td>공급업체 : <%=mer[0].supplier%></td></tr>
+
+    <% if(cls === 'CST' && login) { %> <!--고객일 때만 이용 가능-->
+    <tr><td>
+        <a href="/purchase/detail/<%=mer[0].mer_id%>" ><button class="btn btn-outline-primary btn-sm" type="submit" >구매</button></a>
+        <form action = "/purchase/cart_process" method="post" style = "display : inline-block">
+            <input type="hidden" value="<%=mer[0].mer_id%>" name="mer_id">
+            <input type="hidden" value="<%=loginid%>" name="loginid">
+            <button class="btn btn-outline-primary btn-sm" type="submit">장바구니</button>
+        </form>
+    </td></tr>
+    <% } %>
+</table>

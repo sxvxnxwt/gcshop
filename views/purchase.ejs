@@ -1,0 +1,37 @@
+<% if(cls === 'CST') { %>
+<table class="table table-bordered text-center" style="text-align: center;">
+    <thead class="table-primary ">
+        <th>상품</th><th>상품명</th><th>단가</th><th>구매량</th><th>총금액</th><th>구매일</th><th>취소여부</th>
+    </thead>
+    
+    <% var k = 0;
+    while(k<mer.length) {
+    %>
+        <tr>
+            <td><img src="<%=mer[k].image%>" style="width:100px;height:100px;"></td>
+            <td><%=mer[k].name%></td>
+            <td><%=mer[k].price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>원</td>
+            <td><%=mer[k].qty%></td>
+            <td><%=mer[k].total.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")%>원</td>
+            <td><%=mer[k].date%></td>
+    <% if(mer[k].cancel === 'N') { %>
+            <td><a href="/purchase/update_process/<%=mer[k].purchase_id%>" style="text-decoration: none;">구매취소</a></td>
+        </tr>
+    <% } else { %>
+            <td>취소된 상품</td>
+        </tr>
+    <% } %> 
+  
+    <% k++; } %>
+</table>
+
+<% if(mer.length === 0) { %>
+    <p>자료가 없습니다. </p>
+<% } %>
+
+<% } else { %>
+    <script>
+        alert('고객만 이용 가능합니다.');
+        window.location.href='/';
+    </script>
+<% } %>

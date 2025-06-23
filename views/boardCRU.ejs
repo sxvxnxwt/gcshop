@@ -1,0 +1,87 @@
+
+<div class="container">	
+	
+    <% if(CRU === 'C') { %> <!--생성-->
+        <h2><%=boardtype[0].title%> 작성</h2>
+        <form action="/board/create_process" method="post" >
+    <% } else if(CRU === 'U') { %> <!--수정-->
+    <h2><%=boardtype[0].title%> 수정</h2>
+	<form action="/board/update_process" method="post" >
+        <input type = "hidden" name="board_id" value = "<%=board[0].board_id%>">
+        <input type = "hidden" name="exist_password" value = "<%=board[0].password%>">
+    <% } %>
+        <input type = "hidden" name="type_id" value = "<%=boardtype[0].type_id%>">
+        <input type = "hidden" name="loginid" value = "<%=writer[0].loginid%>">
+        <input type = "hidden" name="pNum" value = "<%=pNum%>">
+		<div class="mb-3">
+			<label class="form-label" for="id">제목</label> 
+            <% if(CRU === 'C') { %><!--생성-->
+			    <input class="form-control" type="text" name="title" style = "width:300px;" />
+            <% } else if(CRU === 'R') { %><!--조회-->
+                <input class="form-control" type="text" name="title" value="<%=board[0].title%>" style = "width:300px;" disabled="disabled" />
+            <% } else { %><!--수정-->
+                <input class="form-control" type="text" name="title" value="<%=board[0].title%>" style = "width:300px;" />
+            <% } %>
+        </div>
+        <div class="mb-3">
+			<label class="form-label" for="id">작성자</label> 
+            <% if(CRU === 'C') { %><!--생성-->
+			    <input class="form-control" type="text" name="name" value = "<%=writer[0].name%>" style = "width:300px;" disabled="disabled"/>
+            <% } else if(CRU === 'R') { %><!--조회-->
+                <input class="form-control" type="text" name="name" value = "<%=writer[0].name%>" style = "width:300px;" disabled="disabled"/>
+            <% } else { %><!--수정-->
+                <input class="form-control" type="text" name="name" value = "<%=writer[0].name%>" style = "width:300px;" disabled="disabled"/>
+            <% } %>
+			
+		</div>
+        <div class="mb-3">
+			<label class="form-label" for="id">내용</label> 
+            <% if(CRU === 'C') { %><!--생성-->
+			    <textarea class="form-control" name="content" style = "width:800px;height: 200px;" ></textarea>
+            <% } else if(CRU === 'R') { %><!--조회-->
+                <textarea class="form-control" name="content" style = "width:800px;height: 200px;" disabled="disabled" ><%=board[0].content%></textarea>
+            <% } else { %><!--수정-->
+                <textarea class="form-control" name="content" style = "width:800px;height: 200px;" ><%=board[0].content%></textarea>
+            <% } %>
+			
+		</div>
+        <% if(CRU === 'C') { %><!--생성-->
+            <div class="mb-3">
+			    <label class="form-label" for="id">갱신삭제시 비밀번호</label> 
+			    <input class="form-control" type="text" name="password" style = "width:300px;" />
+            </div>
+        <% } else if(CRU === 'R') { %><!--조회-->
+                <!-- <input class="form-control" type="text" name="password" style = "width:300px;" /> 뜨면 안됨-->
+        <% } else { %><!--수정-->
+            <% if(cls === 'MNG') { %>
+                <input type="hidden" name="password" value="<%=board[0].password%>"/>
+            <% } else { %>
+            <div class="mb-3">
+                <label class="form-label" for="id">갱신삭제시 비밀번호</label> 
+                <input class="form-control" type="text" name="password" style = "width:300px;" />
+            </div>
+            <% } %>
+        <% } %>
+		
+        <% if(CRU === 'C') { %>
+            <button class="btn btn-outline-primary btn-sm" type="submit">생성</button>
+            <button class="btn btn-outline-primary btn-sm" type="button" onclick="location.href=`/board/view/<%=boardtype[0].type_id%>/1`">보드 목록으로 돌아가기</button>
+        <% } else if(CRU === 'U') { %>
+            <button class="btn btn-outline-primary btn-sm" type="submit">수정</button>
+            <button class="btn btn-outline-primary btn-sm" type="button" onclick="location.href=`/board/view/<%=boardtype[0].type_id%>/1`">보드 목록으로 돌아가기</button>
+        <% } %>
+		
+        <% if(CRU === 'R') { %> <!--조회할 때만 떠야 함-->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="/board/view/<%=boardtype[0].type_id%>/<%=pNum%>"> <button type="button" class="btn btn-info me-md-2">목록</button> </a>
+                <% if(board[0].loginid === person[0].loginid || cls === 'MNG') { %> <!--작성자와 접속자가 동일할 경우 혹은 관리자일 경우-->
+                <a href="/board/update/<%=board[0].board_id%>/<%=boardtype[0].type_id%>/<%=pNum%>"> 
+                    <button type="button" class="btn btn-info me-md-2">수정</button> </a>
+                <a href="/board/delete/<%=board[0].board_id%>/<%=boardtype[0].type_id%>/<%=pNum%>" onclick="if(confirm('정말로 삭제하시겠습니까?')==false) return false"> 
+                    <button type="button" class="btn btn-info me-md-2">삭제</button> </a>
+                <% } %>
+            </div>
+        <% } %>
+        
+  </form>
+</div>

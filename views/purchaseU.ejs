@@ -1,0 +1,135 @@
+
+<% if(cls === 'MNG') { %>
+<div class="container">	
+
+
+    <h2>구매 목록 수정</h2>
+
+    <form action="/purchaseupdate_process" method="post">
+		<input type="hidden" name="purchaseId" value="<%=purchase[0].purchase_id%>">
+
+		<div class="mb-3">
+			<label class="form-label" for="id_main">고객 </label>
+			<select name="customer_category" id="id_main">
+				<%
+					var i=0;
+					while(i < customer.length) {
+						var selected='';
+						var ids = customer[i].name;
+						if(ids === purchase[0].personname) {
+							selected = 'selected';
+						}
+				%>
+						<option value="<%=customer[i].name%>" <%=selected%> ><%=customer[i].name%>
+						</option>
+				<% i++; } %>
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label" for="id_main">상품 </label>
+			<select name="product_category" id="id_main">
+				<%
+					var i=0;
+					while(i < product.length) {
+						var selected='';
+						var ids = product[i].name;
+						if(ids === purchase[0].productname) {
+							selected = 'selected';
+						}
+				%>
+						<option value="<%=product[i].name%>" <%=selected%> ><%=product[i].name%>
+						</option>
+				<% i++; } %>
+			</select>
+		</div>
+
+		<table>
+			<tr>
+				<td><div class="mb-3">
+					<label class="form-label" for="id">날짜</label>
+					<input class="form-control" type="text" name="date" value="<%=purchase[0].date%>" style="width:300px;" disabled="disabled"/>
+				</div></td>
+				<td><div class="mb-3">
+					<label class="form-label" for="id">가격</label>
+					<input class="form-control" type="text" name="price" value="<%=purchase[0].price%>" style="width:300px;"/>
+				</div></td>
+			</tr>
+
+			<tr>
+				<td><div class="mb-3">
+					<label class="form-label" for="id">포인트</label>
+					<input class="form-control" type="text" name="point" value="<%=purchase[0].point%>" style="width:300px;"/>
+				</div></td>
+				<td><div class="mb-3">
+					<label class="form-label" for="id">수량</label>
+					<input class="form-control" type="text" name="qty" value="<%=purchase[0].qty%>" style="width:300px;"/>
+				</div></td>
+			</tr>
+
+			<tr>
+				<td><div class="mb-3">
+					<label class="form-label" for="id">총액</label>
+					<input class="form-control" type="text" name="total" value="<%=purchase[0].total%>" style="width:300px;"/>
+				</div></td>
+			</tr>
+		</table>
+
+		<div class="mb-3">
+			<label class="form-label" for="pay">지불여부 </label>
+			<select name="payYN" id="pay">
+				<%
+                    var yn = purchase[0].payYN;
+					if(yn === 'Y') {
+				%>
+						<option value="YES" selected="selected">YES</option>
+						<option value="NO">NO</option>
+				<% } else { %>
+						<option value="YES">YES</option>
+						<option value="NO" selected="selected">NO</option>
+				<% } %>
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label" for="can">취소여부 </label>
+			<select name="cancel" id="can">
+				<%
+                var yn = purchase[0].cancel;
+                if(yn === 'Y') {
+				%>
+						<option value="YES" selected="selected">YES</option>
+						<option value="NO">NO</option>
+				<% } else { %>
+						<option value="YES">YES</option>
+						<option value="NO" selected="selected">NO</option>
+				<% } %>
+			</select>
+		</div>
+
+		<div class="mb-3">
+			<label class="form-label" for="refu">환불여부 </label>
+			<select name="refund" id="refu">
+				<%
+                var yn = purchase[0].refund;
+                if(yn === 'Y') {
+				%>
+						<option value="YES" selected="selected">YES</option>
+						<option value="NO">NO</option>
+				<% } else { %>
+						<option value="YES">YES</option>
+						<option value="NO" selected="selected">NO</option>
+				<% } %>
+			</select>
+		</div>
+
+		<button class="btn btn-outline-primary btn-sm" type="submit">수정</button> 
+		<a href="/purchaseview"><button class="btn btn-outline-primary btn-sm" type="button">구매 목록 돌아가기</button></a>
+	</form>
+</div>
+<% } else { %>
+	<script>
+        alert('관리자만 이용 가능합니다.');
+        window.location.href='/';
+    </script>
+<% } %>
